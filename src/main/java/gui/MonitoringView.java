@@ -10,47 +10,60 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import monitoring.DataGenerator;
-import monitoring.MonitoringController;
-
+import javax.swing.table.DefaultTableModel;
+import monitoring.ApplicationController;
 
 /**
  *
  * @author user
  */
 public class MonitoringView extends JFrame {
-    private Patient patient;
-    private JTextArea dataArea;
+
+    private JTable dataTable;
     private JButton startMonitoringButton;
     private JButton stopMonitoringButton;
-    private MonitoringController monitoringController;
+    private ApplicationController controller;
+    private DefaultTableModel tableModel;
 
-    public MonitoringView(Patient patient) {
-        this.patient = patient;
-        setTitle("Monitoring: " + patient.getFullname());
+    public MonitoringView(ApplicationController controller) {
+        this.controller = controller;
+        Patient patient = controller.getCurrentPatient();
+        setTitle("Monitoring: ID: " + patient.getId() + ", Name: " + patient.getFullname());
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        dataArea = new JTextArea();
-        dataArea.setEditable(false);
+        String[] columnNames = {"Time", "Parameter", "Value"};
+        tableModel = new DefaultTableModel(columnNames, 10) {
+            @Override
+            public boolean isCellEditable(int row, int column
+            ) {
+                return false;
+            }
+        };
+
+        dataTable = new JTable(tableModel);
+        dataTable.setRowSelectionAllowed(false);
+        dataTable.setColumnSelectionAllowed(false);
+        dataTable.setCellSelectionEnabled(false);
+        dataTable.getTableHeader().setReorderingAllowed(false);
+        PatientObserver observer = new PatientObserver(tableModel, dataTable);
+        controller.setPatientObserver(observer);
 
         startMonitoringButton = new JButton("Start Monitoring");
         stopMonitoringButton = new JButton("Stop Monitoring");
 
-        monitoringController = new MonitoringController(new DataGenerator());
-
         startMonitoringButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                monitoringController.startMonitoring();
+                controller.startMonitoring();
             }
         });
 
         stopMonitoringButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                monitoringController.stopMonitoring();
+                controller.stopMonitoring();
             }
         });
 
@@ -58,9 +71,10 @@ public class MonitoringView extends JFrame {
         buttonPanel.add(startMonitoringButton);
         buttonPanel.add(stopMonitoringButton);
 
-        add(new JScrollPane(dataArea), BorderLayout.CENTER);
+        add(new JScrollPane(dataTable), BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
+
 }

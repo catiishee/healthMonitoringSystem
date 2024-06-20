@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import monitoring.ApplicationController;
 
 /**
  *
@@ -18,8 +19,10 @@ public class SelectPatientView extends JFrame {
 
     private JTextField idField;
     private JButton openButton;
+    private ApplicationController controller;
 
-    public SelectPatientView() {
+    public SelectPatientView(ApplicationController controller) {
+        this.controller = controller;
         setTitle("Open Patient");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +38,7 @@ public class SelectPatientView extends JFrame {
                 if (!id.isEmpty()) {
                     Patient patient = loadPatient(id); 
                     if (patient != null) {
-                        new MonitoringView(patient);
+                        new MonitoringView(controller);
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Patient not found.");

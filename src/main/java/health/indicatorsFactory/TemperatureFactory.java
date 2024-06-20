@@ -11,16 +11,16 @@ import health.Temperature;
  *
  * @author user
  */
-public class TemperatureFactory extends HealthIndicatorFactory {
+public class TemperatureFactory extends HealthIndicatorFactory<Temperature> {
 
     public TemperatureFactory() {
         super(35.0, 40.0, 35.5, 37.0, 0.1, 0.5);
     }
 
     @Override
-    public HealthIndicator createIndicator(HealthIndicator healthIndicator) {
+    public Temperature createIndicator(HealthIndicator healthIndicator) {
         double newValue = newValue(healthIndicator);
-        boolean isCritical = newValue <= getMinCritical() || newValue >= getMaxCritical();
+        boolean isCritical = newValue <= getMinNormal() || newValue >= getMaxNormal();
         return new Temperature(newValue, isCritical);
     }
      

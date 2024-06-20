@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import monitoring.ApplicationController;
 
 /**
  *
@@ -19,6 +20,7 @@ public class MainView extends JFrame {
     private JButton newPatientButton;
     private JButton openPatientButton;
     private JButton exitButton;
+    private ApplicationController controller = new ApplicationController();
 
     public MainView() {
         setTitle("Patient Monitoring System");
@@ -33,14 +35,14 @@ public class MainView extends JFrame {
         newPatientButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PatientView();
+                new PatientView(controller);
             }
         });
 
         openPatientButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SelectPatientView();
+                new SelectPatientView(controller);
             }
         });
 

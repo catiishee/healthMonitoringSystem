@@ -10,8 +10,9 @@ import java.util.Random;
 /**
  *
  * @author user
+ * @param <T>
  */
-public abstract class HealthIndicatorFactory {
+public abstract class HealthIndicatorFactory<T extends HealthIndicator> {
 
     private double minCritical;
     private double maxCritical;
@@ -29,9 +30,9 @@ public abstract class HealthIndicatorFactory {
         this.maxStep = maxStep;
     }
     
-    public abstract HealthIndicator createIndicator(HealthIndicator healthIndicator);
+    public abstract T createIndicator(HealthIndicator healthIndicator);
     
-    public HealthIndicator createIndicator(){
+    public T createIndicator(){
         double mean = (minNormal + maxNormal)/2;
         return createIndicator(new HealthIndicator(mean, false));
     }

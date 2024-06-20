@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import monitoring.ApplicationController;
 
 /**
  *
@@ -18,8 +19,10 @@ public class PatientView extends JFrame {
     private JTextField idField;
     private JTextField nameField;
     private JButton createButton;
+    private ApplicationController controller;
 
-    public PatientView() {
+    public PatientView(ApplicationController controller) {
+        this.controller = controller;
         setTitle("New Patient");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,8 +38,8 @@ public class PatientView extends JFrame {
                 String id = idField.getText();
                 String name = nameField.getText();
                 if (!id.isEmpty() && !name.isEmpty()) {
-                    Patient patient = new Patient(id, name);
-                    new MonitoringView(patient);
+                    controller.createPatient(id, name);
+                    new MonitoringView(controller);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter both ID and name.");

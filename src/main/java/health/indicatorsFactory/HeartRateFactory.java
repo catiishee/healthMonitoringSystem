@@ -11,16 +11,16 @@ import health.HeartRate;
  *
  * @author user
  */
-public class HeartRateFactory extends HealthIndicatorFactory {
+public class HeartRateFactory extends HealthIndicatorFactory<HeartRate> {
 
     public HeartRateFactory() {
         super(30, 180, 60, 100, 1, 5);
     }
 
     @Override
-    public HealthIndicator createIndicator(HealthIndicator healthIndicator) {
+    public HeartRate createIndicator(HealthIndicator healthIndicator) {
         double newValue = newValue(healthIndicator);
-        boolean isCritical = newValue <= getMinCritical() || newValue >= getMaxCritical();
+        boolean isCritical = newValue <= getMinNormal() || newValue >= getMaxNormal();
         return new HeartRate(newValue, isCritical);
     }
 

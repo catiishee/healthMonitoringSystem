@@ -11,16 +11,16 @@ import health.HealthIndicator;
  *
  * @author user
  */
-public class CentralVenousPressureFactory extends HealthIndicatorFactory {
+public class CentralVenousPressureFactory extends HealthIndicatorFactory<CentralVenousPressure> {
 
     public CentralVenousPressureFactory() {
         super(0, 20, 2, 12, 0.5, 2);
     }
     
     @Override
-    public HealthIndicator createIndicator(HealthIndicator healthIndicator) {
+    public CentralVenousPressure createIndicator(HealthIndicator healthIndicator) {
         double newValue = newValue(healthIndicator);
-        boolean isCritical = newValue <= getMinCritical() || newValue >= getMaxCritical();
+        boolean isCritical = newValue <= getMinNormal() || newValue >= getMaxNormal();
         return new CentralVenousPressure(newValue, isCritical);
     }
     

@@ -7,7 +7,9 @@ package human;
 import health.CentralVenousPressure;
 import health.HeartRate;
 import health.Temperature;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -18,9 +20,10 @@ public class Patient {
 
     String id;
     String fullname;
-    List<Temperature> temperatures = new ArrayList<>();
-    List<HeartRate> heartRates = new ArrayList<>();
-    List<CentralVenousPressure> pressures = new ArrayList<>();
+    Deque<Temperature> temperatures = new ArrayDeque<>();
+    Deque<HeartRate> heartRates = new ArrayDeque<>();
+    Deque<CentralVenousPressure> pressures = new ArrayDeque<>();
+    private static final int MAX_SIZE = 10;
 
     public Patient(String id, String fullname) {
         this.id = id;
@@ -36,16 +39,58 @@ public class Patient {
     }
 
     public List<Temperature> getTemperatures() {
-        return temperatures;
+        return new ArrayList<>(temperatures);
     }
 
     public List<HeartRate> getHeartRates() {
-        return heartRates;
+        return new ArrayList<>(heartRates);
     }
 
     public List<CentralVenousPressure> getPressures() {
-        return pressures;
+        return new ArrayList<>(pressures);
+    }
+
+    public void addTemperature(Temperature measurement) {
+        if (temperatures.size() == MAX_SIZE) {
+            temperatures.removeFirst();
+        }
+        temperatures.addLast(measurement);
     }
     
+    public void addHeartRate(HeartRate measurement) {
+        if (heartRates.size() == MAX_SIZE) {
+            heartRates.removeFirst(); 
+        }
+        heartRates.addLast(measurement);    
+    }
+
+    public void addPressure(CentralVenousPressure measurement) {
+        if (pressures.size() == MAX_SIZE) {
+            pressures.removeFirst(); 
+        }
+        pressures.addLast(measurement);   
+    }
     
+    public Temperature getLastTemperature(){
+        if(temperatures.isEmpty()){
+            return null;
+        }
+        return temperatures.getLast();
+    }
+    
+    public HeartRate getLastHeartRate(){
+        if(heartRates.isEmpty()){
+            return null;
+        }
+        return heartRates.getLast();
+    }
+    
+    public CentralVenousPressure getLastPressure(){
+        if(pressures.isEmpty()){
+            return null;
+        }
+        return pressures.getLast();
+    }
+
+
 }
