@@ -56,41 +56,40 @@ public class Patient {
         }
         temperatures.addLast(measurement);
     }
-    
+
     public void addHeartRate(HeartRate measurement) {
         if (heartRates.size() == MAX_SIZE) {
-            heartRates.removeFirst(); 
+            heartRates.removeFirst();
         }
-        heartRates.addLast(measurement);    
+        heartRates.addLast(measurement);
     }
 
     public void addPressure(CentralVenousPressure measurement) {
         if (pressures.size() == MAX_SIZE) {
-            pressures.removeFirst(); 
+            pressures.removeFirst();
         }
-        pressures.addLast(measurement);   
+        pressures.addLast(measurement);
     }
-    
-    public Temperature getLastTemperature(){
-        if(temperatures.isEmpty()){
+
+    public Temperature getLastTemperature() {
+        if (temperatures.isEmpty()) {
             return null;
         }
         return temperatures.getLast();
     }
-    
-    public HeartRate getLastHeartRate(){
-        if(heartRates.isEmpty()){
+
+    public HeartRate getLastHeartRate() {
+        if (heartRates.isEmpty()) {
             return null;
         }
         return heartRates.getLast();
     }
-    
-    public CentralVenousPressure getLastPressure(){
-        if(pressures.isEmpty()){
+
+    public CentralVenousPressure getLastPressure() {
+        if (pressures.isEmpty()) {
             return null;
         }
         return pressures.getLast();
     }
-
 
 }

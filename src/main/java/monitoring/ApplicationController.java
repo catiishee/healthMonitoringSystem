@@ -5,10 +5,15 @@
 package monitoring;
 
 import gui.PatientObserver;
-import healthmonitoringsystem.DataStorage;
+import dataStorage.DataStorage;
+import dataStorage.PatientSerializer;
 import human.Patient;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,23 +22,30 @@ import java.util.TimerTask;
 public class ApplicationController {
 
     private DataGenerator dataGenerator = new DataGenerator();
-    private Timer timer;
-    private DataStorage storage = new DataStorage();
+    private ScheduledExecutorService scheduler;
+    private DataStorage storage;
     private PatientObserver patientObserver;
+    private PatientSerializer patientSerializer = new PatientSerializer();
 
+    public ApplicationController() {
+        this.storage  = new DataStorage(patientSerializer);
+    }
+    
     public void startMonitoring() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                measure();
-            }
-        }, 0, 5000);
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            measure();
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     public void stopMonitoring() {
-        if (timer != null) {
-            timer.cancel();
+        if (scheduler != null) {
+            scheduler.shutdown();
+            try {
+                patientSerializer.savePatient(getCurrentPatient());
+            } catch (IOException ex) {
+                Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -57,6 +69,11 @@ public class ApplicationController {
 
     public void setPatientObserver(PatientObserver patientObserver) {
         this.patientObserver = patientObserver;
+        try {
+                patientSerializer.savePatient(getCurrentPatient());
+            } catch (IOException ex) {
+                Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         notify(getCurrentPatient());
     }
     
@@ -64,5 +81,11 @@ public class ApplicationController {
         if(patientObserver != null){
             patientObserver.update(patient);
         }
+    }
+    
+    public Patient loadPatient(String id){
+        Patient patient = storage.getPatientById(id);
+        storage.setCurrentPatient(patient);
+        return patient;
     }
 }

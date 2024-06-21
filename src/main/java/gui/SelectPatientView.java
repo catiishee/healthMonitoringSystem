@@ -23,44 +23,41 @@ public class SelectPatientView extends JFrame {
 
     public SelectPatientView(ApplicationController controller) {
         this.controller = controller;
-        setTitle("Open Patient");
+        setTitle("Открыть пациента");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         idField = new JTextField(15);
-        openButton = new JButton("Open");
+        openButton = new JButton("Открыть");
 
         openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = idField.getText();
                 if (!id.isEmpty()) {
-                    Patient patient = loadPatient(id); 
+                    Patient patient = controller.loadPatient(id); 
                     if (patient != null) {
                         new MonitoringView(controller);
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Patient not found.");
+                        JOptionPane.showMessageDialog(null, "Пациент не найден.");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please enter a patient ID.");
+                    JOptionPane.showMessageDialog(null, "Пожалуйста, введите ID пациента.");
                 }
             }
         });
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 2, 10, 10));
-        panel.add(new JLabel("Patient ID:"));
+        panel.add(new JLabel("ID пациента:"));
         panel.add(idField);
         panel.add(openButton);
 
         add(panel, BorderLayout.CENTER);
         setVisible(true);
     }
-
-    private Patient loadPatient(String id) {
-        
-        return null; 
-    }
+    
+    
 }

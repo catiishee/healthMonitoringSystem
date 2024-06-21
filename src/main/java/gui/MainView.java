@@ -23,14 +23,14 @@ public class MainView extends JFrame {
     private ApplicationController controller = new ApplicationController();
 
     public MainView() {
-        setTitle("Patient Monitoring System");
+        setTitle("Health monitoring system");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        newPatientButton = new JButton("New Patient");
-        openPatientButton = new JButton("Open Patient");
-        exitButton = new JButton("Exit");
+        newPatientButton = new JButton("Новый пациент");
+        openPatientButton = new JButton("Открыть пациента");
+        exitButton = new JButton("Выход");
 
         newPatientButton.addActionListener(new ActionListener() {
             @Override

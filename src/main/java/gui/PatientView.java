@@ -23,14 +23,14 @@ public class PatientView extends JFrame {
 
     public PatientView(ApplicationController controller) {
         this.controller = controller;
-        setTitle("New Patient");
+        setTitle("Новый пациент");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         idField = new JTextField(15);
         nameField = new JTextField(15);
-        createButton = new JButton("Create");
+        createButton = new JButton("Создать");
 
         createButton.addActionListener(new ActionListener() {
             @Override
@@ -42,16 +42,16 @@ public class PatientView extends JFrame {
                     new MonitoringView(controller);
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please enter both ID and name.");
+                    JOptionPane.showMessageDialog(null, "Пожалуйста, введите ID и имя.");
                 }
             }
         });
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 2, 10, 10));
-        panel.add(new JLabel("Patient ID:"));
+        panel.add(new JLabel("ID пациента:"));
         panel.add(idField);
-        panel.add(new JLabel("Patient Name:"));
+        panel.add(new JLabel("ФИО пациента:"));
         panel.add(nameField);
         panel.add(createButton);
 

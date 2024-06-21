@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +28,7 @@ public class PatientObserver implements DataObserver<Patient> {
     private final DefaultTableModel tableModel;
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.0");
     private JTable jTable;
+    private JDialog previousDialog;
 
     public PatientObserver(DefaultTableModel tableModel, JTable jTable) {
         this.tableModel = tableModel;
@@ -43,7 +46,7 @@ public class PatientObserver implements DataObserver<Patient> {
 
         tableModel.setRowCount(maxRows);
         tableModel.setColumnCount(3);
-        tableModel.setColumnIdentifiers(new String[]{"Temperature", "Heart Rate", "Pressure"});
+        tableModel.setColumnIdentifiers(new String[]{"Температура", "Сердечный ритм", "Центральное венозное давление"});
 
         for (int i = 0; i < maxRows; i++) {
             if (i < rowCount) {
@@ -100,7 +103,40 @@ public class PatientObserver implements DataObserver<Patient> {
 
         jTable.setDefaultRenderer(Object.class, cellRenderer);
         tableModel.fireTableDataChanged();
+
+        checkAndNotify(temperatures, heartRates, pressures);
+    }
+
+    private void checkAndNotify(List<Temperature> temperatures, List<HeartRate> heartRates, List<CentralVenousPressure> pressures) {
+        StringBuilder criticalConditions = new StringBuilder();
+
+        if (isLastCritical(temperatures)) {
+            criticalConditions.append("Температура вышла в критическое состояние.\n");
+        }
+        if (isLastCritical(heartRates)) {
+            criticalConditions.append("Сердечный ритм вышел в критическое состояние.\n");
+        }
+        if (isLastCritical(pressures)) {
+            criticalConditions.append("Центральное венозное давление вышло в критическое состояние.\n");
+        }
+
+        if (criticalConditions.length() > 0) {
+            if (previousDialog != null && previousDialog.isShowing()) {
+                previousDialog.dispose();
+            }
+
+            JOptionPane optionPane = new JOptionPane(criticalConditions.toString(), JOptionPane.WARNING_MESSAGE);
+            previousDialog = optionPane.createDialog("Критическое состояние");
+            previousDialog.setVisible(true);
+        }
+    }
+
+    private boolean isLastCritical(List<? extends HealthIndicator> indicators) {
+        if (indicators.size() < 2) {
+            return false;
+        }
+        HealthIndicator last = indicators.get(indicators.size() - 1);
+        HealthIndicator previous = indicators.get(indicators.size() - 2);
+        return last.isIsCritical() && !previous.isIsCritical();
     }
 }
-
-

@@ -28,12 +28,12 @@ public class MonitoringView extends JFrame {
     public MonitoringView(ApplicationController controller) {
         this.controller = controller;
         Patient patient = controller.getCurrentPatient();
-        setTitle("Monitoring: ID: " + patient.getId() + ", Name: " + patient.getFullname());
+        setTitle("Мониторинг: ID: " + patient.getId() + ", ФИО: " + patient.getFullname());
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        String[] columnNames = {"Time", "Parameter", "Value"};
+        String[] columnNames = {"Время", "Параметр", "Значение"};
         tableModel = new DefaultTableModel(columnNames, 10) {
             @Override
             public boolean isCellEditable(int row, int column
@@ -50,8 +50,8 @@ public class MonitoringView extends JFrame {
         PatientObserver observer = new PatientObserver(tableModel, dataTable);
         controller.setPatientObserver(observer);
 
-        startMonitoringButton = new JButton("Start Monitoring");
-        stopMonitoringButton = new JButton("Stop Monitoring");
+        startMonitoringButton = new JButton("Начало мониторинга");
+        stopMonitoringButton = new JButton("Конец мониторинга");
 
         startMonitoringButton.addActionListener(new ActionListener() {
             @Override
