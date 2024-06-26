@@ -11,6 +11,8 @@ import human.Patient;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.*;
 
@@ -21,6 +23,7 @@ import java.util.stream.*;
 public class PatientSerializer {
 
     private static final String DIRECTORY = "src/main/resources/logs";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public void savePatient(Patient patient) throws IOException {
         if (!Files.exists(Paths.get(DIRECTORY))) {
@@ -39,23 +42,29 @@ public class PatientSerializer {
 
                 if (i < patient.getTemperatures().size()) {
                     Temperature temp = patient.getTemperatures().get(i);
-                    line.append(temp.getValue()).append(";").append(temp.isIsCritical() ? "critical" : "normal").append(";");
+                    line.append(temp.getValue()).append(";")
+                        .append(temp.isIsCritical() ? "critical" : "normal").append(";")
+                        .append(DATE_TIME_FORMATTER.format(temp.getTime())).append(";");
                 } else {
-                    line.append(";;");
+                    line.append(";;;"); 
                 }
 
                 if (i < patient.getHeartRates().size()) {
                     HeartRate rate = patient.getHeartRates().get(i);
-                    line.append(rate.getValue()).append(";").append(rate.isIsCritical() ? "critical" : "normal").append(";");
+                    line.append(rate.getValue()).append(";")
+                        .append(rate.isIsCritical() ? "critical" : "normal").append(";")
+                        .append(DATE_TIME_FORMATTER.format(rate.getTime())).append(";");
                 } else {
-                    line.append(";;");
+                    line.append(";;;"); 
                 }
 
                 if (i < patient.getPressures().size()) {
                     CentralVenousPressure pressure = patient.getPressures().get(i);
-                    line.append(pressure.getValue()).append(";").append(pressure.isIsCritical() ? "critical" : "normal").append(";");
+                    line.append(pressure.getValue()).append(";")
+                        .append(pressure.isIsCritical() ? "critical" : "normal").append(";")
+                        .append(DATE_TIME_FORMATTER.format(pressure.getTime())).append(";");
                 } else {
-                    line.append(";;");
+                    line.append(";;;"); 
                 }
 
                 writer.write(line.toString() + "\n");
@@ -82,24 +91,30 @@ public class PatientSerializer {
                             while ((line = reader.readLine()) != null) {
                                 String[] data = line.split(";");
 
-                                if (data.length >= 2 && !data[0].isEmpty()) {
+                                if (data.length >= 3 && !data[0].isEmpty()) {
+                                    LocalDateTime time = LocalDateTime.parse(data[2], DATE_TIME_FORMATTER);
                                     patient.addTemperature(new Temperature(
                                             Double.parseDouble(data[0]),
-                                            "critical".equals(data[1])
+                                            "critical".equals(data[1]),
+                                            time
                                     ));
                                 }
 
-                                if (data.length >= 4 && !data[2].isEmpty()) {
+                                if (data.length >= 6 && !data[3].isEmpty()) {
+                                    LocalDateTime time = LocalDateTime.parse(data[5], DATE_TIME_FORMATTER);
                                     patient.addHeartRate(new HeartRate(
-                                            Double.parseDouble(data[2]),
-                                            "critical".equals(data[3])
+                                            Double.parseDouble(data[3]),
+                                            "critical".equals(data[4]),
+                                            time
                                     ));
                                 }
 
-                                if (data.length >= 6 && !data[4].isEmpty()) {
+                                if (data.length >= 9 && !data[6].isEmpty()) {
+                                    LocalDateTime time = LocalDateTime.parse(data[8], DATE_TIME_FORMATTER);
                                     patient.addPressure(new CentralVenousPressure(
-                                            Double.parseDouble(data[4]),
-                                            "critical".equals(data[5])
+                                            Double.parseDouble(data[6]),
+                                            "critical".equals(data[7]),
+                                            time
                                     ));
                                 }
                             }
@@ -113,5 +128,4 @@ public class PatientSerializer {
 
         return patients;
     }
-
 }

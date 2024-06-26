@@ -4,6 +4,8 @@
  */
 package health;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author user
@@ -12,6 +14,10 @@ public class Temperature extends HealthIndicator{
     
     public Temperature(double value, boolean isCritical) {
         super(value, isCritical);
+    }
+
+    public Temperature(double value, boolean isCritical, LocalDateTime time) {
+        super(value, isCritical, time);
     }
     
 }

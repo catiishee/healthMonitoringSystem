@@ -4,6 +4,8 @@
  */
 package health;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author user
@@ -12,10 +14,22 @@ public class HealthIndicator {
 
     private double value;
     private boolean isCritical;
+    private LocalDateTime time;
 
     public HealthIndicator(double value, boolean isCritical) {
         this.value = value;
         this.isCritical = isCritical;
+        this.time = LocalDateTime.now();
+    }
+
+    public HealthIndicator(double value, boolean isCritical, LocalDateTime time) {
+        this.value = value;
+        this.isCritical = isCritical;
+        this.time = time;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
     }
 
     public double getValue() {

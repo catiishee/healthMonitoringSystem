@@ -91,5 +91,45 @@ public class Patient {
         }
         return pressures.getLast();
     }
+    
+    public Temperature getLastCriticalTemperatureStart() {
+        List<Temperature> tempList = new ArrayList<>(temperatures);
+        for (int i = tempList.size() - 1; i > 0; i--) {
+            if (tempList.get(i).isIsCritical() && !tempList.get(i - 1).isIsCritical()) {
+                return tempList.get(i);
+            }
+        }
+        if(tempList.get(0).isIsCritical()){
+            return tempList.get(0);
+        }
+        return null;
+    }
+
+    public HeartRate getLastCriticalHeartRateStart() {
+        List<HeartRate> hrList = new ArrayList<>(heartRates);
+        for (int i = hrList.size() - 1; i > 0; i--) {
+            if (hrList.get(i).isIsCritical() && !hrList.get(i - 1).isIsCritical()) {
+                return hrList.get(i);
+            }
+        }
+        if(hrList.get(0).isIsCritical()){
+            return hrList.get(0);
+        }
+        return null;
+    }
+
+    public CentralVenousPressure getLastCriticalPressureStart() {
+        List<CentralVenousPressure> cvpList = new ArrayList<>(pressures);
+        for (int i = cvpList.size() - 1; i > 0; i--) {
+            if (cvpList.get(i).isIsCritical() && !cvpList.get(i - 1).isIsCritical()) {
+                return cvpList.get(i);
+            }
+        }
+        if(cvpList.get(0).isIsCritical()){
+            return cvpList.get(0);
+        }
+        return null;
+    }
+
 
 }

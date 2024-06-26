@@ -17,34 +17,41 @@ import human.Patient;
  * @author user
  */
 public class DataGenerator {
-    
+
     private TemperatureFactory temperetureFactory = new TemperatureFactory();
     private HeartRateFactory heartRateFactory = new HeartRateFactory();
     private CentralVenousPressureFactory pressureFactory = new CentralVenousPressureFactory();
-    
-    public Temperature generateTemperature(Patient patient){
-        Temperature temperature = patient.getLastTemperature();
-        if(temperature == null){
-            return temperetureFactory.createIndicator();
-        } 
-        return temperetureFactory.createIndicator(temperature);
+
+    public Temperature generateTemperature(Patient patient) {
+        Temperature result;
+        Temperature previous = patient.getLastTemperature();
+        if (previous == null) {
+            result = temperetureFactory.createIndicator();
+        } else {
+            result = temperetureFactory.createIndicator(previous);
+        }
+        return result;
     }
-    
-    public HeartRate generateHeartRate(Patient patient){
-        HeartRate heartRate = patient.getLastHeartRate();
-        if(heartRate == null){
-            return heartRateFactory.createIndicator();
-        } 
-        return heartRateFactory.createIndicator(heartRate);
-        
+
+    public HeartRate generateHeartRate(Patient patient) {
+        HeartRate result;
+        HeartRate previous = patient.getLastHeartRate();
+        if (previous == null) {
+            result = heartRateFactory.createIndicator();
+        } else {
+            result = heartRateFactory.createIndicator(previous);
+        }
+        return result;
     }
-    
-    public CentralVenousPressure generatePressure(Patient patient){
-        CentralVenousPressure pressure = patient.getLastPressure();
-        if(pressure == null){
-            return pressureFactory.createIndicator();
-        } 
-        return pressureFactory.createIndicator(pressure);
-        
+
+    public CentralVenousPressure generatePressure(Patient patient) {
+        CentralVenousPressure result;
+        CentralVenousPressure previous = patient.getLastPressure();
+        if (previous == null) {
+            result = pressureFactory.createIndicator();
+        } else {
+            result = pressureFactory.createIndicator(previous);
+        }
+        return result;
     }
 }
