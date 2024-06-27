@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import statistics.Statistics;
 
 /**
  *
@@ -32,10 +33,14 @@ public class PatientObserver implements DataObserver<Patient> {
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
     private JTable jTable;
     private JDialog previousDialog;
+    private DefaultTableModel calculationsTableModel;
+    private JTable calculationsTable;
 
-    public PatientObserver(DefaultTableModel tableModel, JTable jTable) {
+    public PatientObserver(DefaultTableModel tableModel, JTable jTable, DefaultTableModel calculationsTableModel, JTable calculationsTable) {
         this.tableModel = tableModel;
         this.jTable = jTable;
+        this.calculationsTableModel = calculationsTableModel;
+        this.calculationsTable = calculationsTable;
     }
 
     @Override
@@ -109,8 +114,44 @@ public class PatientObserver implements DataObserver<Patient> {
             jTable.revalidate();
             jTable.repaint();
 
+            updateCalculationsTable(temperatures, heartRates, pressures);
+
             checkAndNotify(temperatures, heartRates, pressures);
         });
+    }
+
+    private void updateCalculationsTable(List<Temperature> temperatures, List<HeartRate> heartRates, List<CentralVenousPressure> pressures) {
+    calculationsTableModel.setValueAt("Среднее арифмитическое", 0, 0);
+    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 0, 1);
+    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 0, 2);
+    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 0, 3);
+
+    calculationsTableModel.setValueAt("Математическое ожидание", 1, 0);
+    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 1, 1); 
+    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 1, 2); 
+    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 1, 3); 
+
+    calculationsTableModel.setValueAt("Дисперсия", 2, 0);
+    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(temperatures)), 2, 1);
+    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(heartRates)), 2, 2);
+    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(pressures)), 2, 3);
+
+    calculationsTableModel.setValueAt("Первый квартиль", 3, 0);
+    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(temperatures)), 3, 1);
+    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(heartRates)), 3, 2);
+    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(pressures)), 3, 3);
+
+    calculationsTableModel.setValueAt("Четвёртый квартиль", 4, 0);
+    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(temperatures)), 4, 1);
+    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(heartRates)), 4, 2);
+    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(pressures)), 4, 3);
+
+    calculationsTable.revalidate();
+    calculationsTable.repaint();
+}
+
+    private String formatDouble(double value) {
+        return DECIMAL_FORMAT.format(value);
     }
 
     private String formatValue(HealthIndicator indicator, List<? extends HealthIndicator> indicators, int index) {
