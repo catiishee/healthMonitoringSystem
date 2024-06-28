@@ -13,8 +13,12 @@ import health.indicatorsFactory.TemperatureFactory;
 import human.Patient;
 
 /**
+ * Класс для генерации новых данных состояния здоровья пациента.
+ * Генерирует значения температуры, сердечного ритма и центрального венозного давления.
+ * Использует фабрики для создания новых значений этих показателей.
  *
- * @author user
+ * @author Kate Shcherbinina
+ * @version 1.0
  */
 public class DataGenerator {
 
@@ -22,6 +26,12 @@ public class DataGenerator {
     private HeartRateFactory heartRateFactory = new HeartRateFactory();
     private CentralVenousPressureFactory pressureFactory = new CentralVenousPressureFactory();
 
+    /**
+     * Генерирует новое значение температуры для пациента.
+     * 
+     * @param patient Пациент, для которого генерируется значение температуры.
+     * @return Новое значение температуры.
+     */
     public Temperature generateTemperature(Patient patient) {
         Temperature result;
         Temperature previous = patient.getLastTemperature();
@@ -33,6 +43,12 @@ public class DataGenerator {
         return result;
     }
 
+    /**
+     * Генерирует новое значение сердечного ритма для пациента.
+     * 
+     * @param patient Пациент, для которого генерируется значение сердечного ритма.
+     * @return Новое значение сердечного ритма.
+     */
     public HeartRate generateHeartRate(Patient patient) {
         HeartRate result;
         HeartRate previous = patient.getLastHeartRate();
@@ -44,6 +60,12 @@ public class DataGenerator {
         return result;
     }
 
+    /**
+     * Генерирует новое значение центрального венозного давления для пациента.
+     * 
+     * @param patient Пациент, для которого генерируется значение центрального венозного давления.
+     * @return Новое значение центрального венозного давления.
+     */
     public CentralVenousPressure generatePressure(Patient patient) {
         CentralVenousPressure result;
         CentralVenousPressure previous = patient.getLastPressure();

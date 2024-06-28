@@ -9,11 +9,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import monitoring.ApplicationController;
 
 /**
+ * Класс SelectPatientView представляет собой окно для открытия существующего пациента по его идентификатору (ID).
+ * 
+ * Окно позволяет пользователю вводить идентификатор пациента и открывает окно мониторинга, если пациент найден.
  *
- * @author user
+ * @author Kate Shcherbinina
+ * @version 1.0
  */
 public class SelectPatientView extends JFrame {
 
@@ -21,6 +29,11 @@ public class SelectPatientView extends JFrame {
     private JButton openButton;
     private ApplicationController controller;
 
+    /**
+     * Конструктор для создания окна выбора пациента.
+     * 
+     * @param controller Контроллер приложения для управления логикой открытия пациента.
+     */
     public SelectPatientView(ApplicationController controller) {
         this.controller = controller;
         setTitle("Открыть пациента");
@@ -31,12 +44,28 @@ public class SelectPatientView extends JFrame {
         idField = new JTextField(15);
         openButton = new JButton("Открыть");
 
+        ((AbstractDocument) idField.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches("\\d+")) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("\\d+")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
         openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = idField.getText();
                 if (!id.isEmpty()) {
-                    Patient patient = controller.loadPatient(id); 
+                    Patient patient = controller.loadPatient(id);
                     if (patient != null) {
                         new MonitoringView(controller);
                         dispose();
@@ -58,6 +87,4 @@ public class SelectPatientView extends JFrame {
         add(panel, BorderLayout.CENTER);
         setVisible(true);
     }
-    
-    
 }

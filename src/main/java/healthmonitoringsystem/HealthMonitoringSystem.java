@@ -8,8 +8,9 @@ import gui.MainView;
 import javax.swing.SwingUtilities;
 
 /**
- *
- * @author user
+ * Main
+ * 
+ * @author Kate Shcherbinina
  */
 public class HealthMonitoringSystem {
 

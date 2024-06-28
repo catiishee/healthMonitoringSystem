@@ -12,16 +12,27 @@ import java.awt.event.ActionListener;
 import monitoring.ApplicationController;
 
 /**
+ * Главный класс пользовательского интерфейса приложения для мониторинга здоровья.
+ * 
+ * Этот класс представляет главное окно приложения, в котором можно выбрать 
+ * создание нового пациента, открытие существующего пациента или выход из приложения.
  *
- * @author user
+ * @author Kate Shcherbinina
+ * @version 1.0
  */
-
 public class MainView extends JFrame {
+
     private JButton newPatientButton;
     private JButton openPatientButton;
     private JButton exitButton;
     private ApplicationController controller = new ApplicationController();
 
+    /**
+     * Конструктор для создания главного окна приложения.
+     * 
+     * Устанавливает заголовок окна, размер, операцию при закрытии,
+     * центрует окно на экране и инициализирует кнопки и их действия.
+     */
     public MainView() {
         setTitle("Health monitoring system");
         setSize(800, 600);

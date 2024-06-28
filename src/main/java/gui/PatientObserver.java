@@ -24,8 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import statistics.Statistics;
 
 /**
+ * Класс PatientObserver реализует интерфейс DataObserver для наблюдения за состоянием пациента и обновления пользовательского интерфейса.
  *
- * @author user
+ * @author Kate Shcherbinina
+ * @version 1.0
  */
 public class PatientObserver implements DataObserver<Patient> {
 
@@ -36,6 +38,14 @@ public class PatientObserver implements DataObserver<Patient> {
     private DefaultTableModel calculationsTableModel;
     private JTable calculationsTable;
 
+    /**
+     * Конструктор для создания наблюдателя пациента.
+     * 
+     * @param tableModel Модель таблицы для отображения данных пациента.
+     * @param jTable Таблица для отображения данных пациента.
+     * @param calculationsTableModel Модель таблицы для отображения расчетных данных.
+     * @param calculationsTable Таблица для отображения расчетных данных.
+     */
     public PatientObserver(DefaultTableModel tableModel, JTable jTable, DefaultTableModel calculationsTableModel, JTable calculationsTable) {
         this.tableModel = tableModel;
         this.jTable = jTable;
@@ -43,6 +53,11 @@ public class PatientObserver implements DataObserver<Patient> {
         this.calculationsTable = calculationsTable;
     }
 
+    /**
+     * Метод, вызываемый при обновлении данных пациента.
+     * 
+     * @param patient Обновленный объект пациента.
+     */
     @Override
     public void update(Patient patient) {
         SwingUtilities.invokeLater(() -> {
@@ -120,40 +135,61 @@ public class PatientObserver implements DataObserver<Patient> {
         });
     }
 
+    /**
+     * Обновляет таблицу расчетных данных с новыми значениями.
+     * 
+     * @param temperatures Список измерений температуры.
+     * @param heartRates Список измерений сердечного ритма.
+     * @param pressures Список измерений центрального венозного давления.
+     */
     private void updateCalculationsTable(List<Temperature> temperatures, List<HeartRate> heartRates, List<CentralVenousPressure> pressures) {
-    calculationsTableModel.setValueAt("Среднее арифмитическое", 0, 0);
-    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 0, 1);
-    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 0, 2);
-    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 0, 3);
+        calculationsTableModel.setValueAt("Среднее арифмитическое", 0, 0);
+        calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 0, 1);
+        calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 0, 2);
+        calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 0, 3);
 
-    calculationsTableModel.setValueAt("Математическое ожидание", 1, 0);
-    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 1, 1); 
-    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 1, 2); 
-    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 1, 3); 
+        calculationsTableModel.setValueAt("Математическое ожидание", 1, 0);
+        calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(temperatures)), 1, 1);
+        calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(heartRates)), 1, 2);
+        calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateMean(pressures)), 1, 3);
 
-    calculationsTableModel.setValueAt("Дисперсия", 2, 0);
-    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(temperatures)), 2, 1);
-    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(heartRates)), 2, 2);
-    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(pressures)), 2, 3);
+        calculationsTableModel.setValueAt("Дисперсия", 2, 0);
+        calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(temperatures)), 2, 1);
+        calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(heartRates)), 2, 2);
+        calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateVariance(pressures)), 2, 3);
 
-    calculationsTableModel.setValueAt("Первый квартиль", 3, 0);
-    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(temperatures)), 3, 1);
-    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(heartRates)), 3, 2);
-    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(pressures)), 3, 3);
+        calculationsTableModel.setValueAt("Первый квартиль", 3, 0);
+        calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(temperatures)), 3, 1);
+        calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(heartRates)), 3, 2);
+        calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFirstQuartile(pressures)), 3, 3);
 
-    calculationsTableModel.setValueAt("Четвёртый квартиль", 4, 0);
-    calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(temperatures)), 4, 1);
-    calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(heartRates)), 4, 2);
-    calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(pressures)), 4, 3);
+        calculationsTableModel.setValueAt("Четвёртый квартиль", 4, 0);
+        calculationsTableModel.setValueAt(temperatures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(temperatures)), 4, 1);
+        calculationsTableModel.setValueAt(heartRates.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(heartRates)), 4, 2);
+        calculationsTableModel.setValueAt(pressures.isEmpty() ? "-" : formatDouble(Statistics.calculateFourthQuartile(pressures)), 4, 3);
 
-    calculationsTable.revalidate();
-    calculationsTable.repaint();
-}
+        calculationsTable.revalidate();
+        calculationsTable.repaint();
+    }
 
+    /**
+     * Форматирует значение double в строку с десятичным форматом.
+     * 
+     * @param value Значение для форматирования.
+     * @return Отформатированное значение.
+     */
     private String formatDouble(double value) {
         return DECIMAL_FORMAT.format(value);
     }
 
+    /**
+     * Форматирует значение HealthIndicator для отображения в таблице.
+     * 
+     * @param indicator Индикатор здоровья для форматирования.
+     * @param indicators Список индикаторов здоровья.
+     * @param index Индекс текущего индикатора.
+     * @return Отформатированное значение.
+     */
     private String formatValue(HealthIndicator indicator, List<? extends HealthIndicator> indicators, int index) {
         if (indicator.isIsCritical()) {
             if (index == 0 || !indicators.get(index - 1).isIsCritical()) {
@@ -179,6 +215,12 @@ public class PatientObserver implements DataObserver<Patient> {
         }
     }
 
+    /**
+     * Форматирует Duration в строку формата HH:mm:ss.
+     * 
+     * @param duration Продолжительность для форматирования.
+     * @return Отформатированное значение.
+     */
     private String formatDuration(Duration duration) {
         long seconds = duration.getSeconds();
         long absSeconds = Math.abs(seconds);
@@ -190,6 +232,13 @@ public class PatientObserver implements DataObserver<Patient> {
         return seconds < 0 ? "-" + positive : positive;
     }
 
+    /**
+     * Проверяет критические состояния и уведомляет пользователя.
+     * 
+     * @param temperatures Список измерений температуры.
+     * @param heartRates Список измерений сердечного ритма.
+     * @param pressures Список измерений центрального венозного давления.
+     */
     private void checkAndNotify(List<Temperature> temperatures, List<HeartRate> heartRates, List<CentralVenousPressure> pressures) {
         StringBuilder criticalConditions = new StringBuilder();
 
@@ -214,6 +263,12 @@ public class PatientObserver implements DataObserver<Patient> {
         }
     }
 
+    /**
+     * Проверяет, является ли последнее значение в списке критическим и предыдущее значение не критическое.
+     * 
+     * @param indicators Список индикаторов здоровья.
+     * @return true, если последнее значение критическое и предыдущее значение не критическое, иначе false.
+     */
     private boolean isLastCritical(List<? extends HealthIndicator> indicators) {
         if (indicators.size() < 2) {
             return false;

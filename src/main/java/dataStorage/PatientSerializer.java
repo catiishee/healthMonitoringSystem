@@ -17,14 +17,27 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
+ * Класс для сериализации и десериализации данных пациентов.
+ * Предоставляет методы для сохранения данных пациентов в файлы CSV и загрузки их из файлов.
  *
- * @author user
+ * @author Kate Shcherbinina
+ * @version 1.0
  */
 public class PatientSerializer {
 
-    private static final String DIRECTORY = "src/main/resources/logs";
+    //Домашняя директория текущего пользователя
+    private static final String HOME_DIRECTORY = System.getProperty("user.home");
+    //Путь к директории, где будут храниться файлы с логами пациентов
+    private static final String DIRECTORY = HOME_DIRECTORY + "/patient_logs";
+    //Форматтер для преобразования даты и времени в строку и обратно
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    /**
+     * Сохраняет данные пациента в файл CSV.
+     * 
+     * @param patient Пациент, данные которого нужно сохранить.
+     * @throws IOException Если возникает ошибка ввода-вывода при сохранении файла.
+     */
     public void savePatient(Patient patient) throws IOException {
         if (!Files.exists(Paths.get(DIRECTORY))) {
             Files.createDirectory(Paths.get(DIRECTORY));
@@ -43,28 +56,28 @@ public class PatientSerializer {
                 if (i < patient.getTemperatures().size()) {
                     Temperature temp = patient.getTemperatures().get(i);
                     line.append(temp.getValue()).append(";")
-                        .append(temp.isIsCritical() ? "critical" : "normal").append(";")
-                        .append(DATE_TIME_FORMATTER.format(temp.getTime())).append(";");
+                            .append(temp.isIsCritical() ? "critical" : "normal").append(";")
+                            .append(DATE_TIME_FORMATTER.format(temp.getTime())).append(";");
                 } else {
-                    line.append(";;;"); 
+                    line.append(";;;");
                 }
 
                 if (i < patient.getHeartRates().size()) {
                     HeartRate rate = patient.getHeartRates().get(i);
                     line.append(rate.getValue()).append(";")
-                        .append(rate.isIsCritical() ? "critical" : "normal").append(";")
-                        .append(DATE_TIME_FORMATTER.format(rate.getTime())).append(";");
+                            .append(rate.isIsCritical() ? "critical" : "normal").append(";")
+                            .append(DATE_TIME_FORMATTER.format(rate.getTime())).append(";");
                 } else {
-                    line.append(";;;"); 
+                    line.append(";;;");
                 }
 
                 if (i < patient.getPressures().size()) {
                     CentralVenousPressure pressure = patient.getPressures().get(i);
                     line.append(pressure.getValue()).append(";")
-                        .append(pressure.isIsCritical() ? "critical" : "normal").append(";")
-                        .append(DATE_TIME_FORMATTER.format(pressure.getTime())).append(";");
+                            .append(pressure.isIsCritical() ? "critical" : "normal").append(";")
+                            .append(DATE_TIME_FORMATTER.format(pressure.getTime())).append(";");
                 } else {
-                    line.append(";;;"); 
+                    line.append(";;;");
                 }
 
                 writer.write(line.toString() + "\n");
@@ -72,6 +85,12 @@ public class PatientSerializer {
         }
     }
 
+    /**
+     * Загружает данные всех пациентов из файлов CSV в указанной директории.
+     * 
+     * @return Список пациентов, загруженных из файлов.
+     * @throws IOException Если возникает ошибка ввода-вывода при загрузке файлов.
+     */
     public List<Patient> loadPatients() throws IOException {
         List<Patient> patients = new ArrayList<>();
 
