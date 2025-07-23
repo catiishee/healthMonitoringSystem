@@ -53,5 +53,3 @@ This project is a synthetic health monitoring system developed as part of a cour
 ## Acknowledgments
 - Developed under the guidance of Dmitry Sergeyevich Smirnov and Petr Vladimirovich Bochkarev, as part of the curriculum at MEPhI.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
