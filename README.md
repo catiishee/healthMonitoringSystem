@@ -1,7 +1,7 @@
 # Health Monitoring System
 
 ## Overview
-This project is a synthetic health monitoring system developed as part of a course on Web Application Programming at the National Research Nuclear University MEPhI. The system tracks key health indicators such as temperature, heart rate, and central venous pressure, providing real-time data monitoring and analysis. The program features a graphical user interface (GUI) and operates in a multithreaded environment to ensure continuous data generation and alerting on critical conditions.
+This project is a synthetic health monitoring system. The system tracks key health indicators such as temperature, heart rate, and central venous pressure, providing real-time data monitoring and analysis. The program features a graphical user interface (GUI) and operates in a multithreaded environment to ensure continuous data generation and alerting on critical conditions.
 
 ## Objectives
 - **Develop a health monitoring system** that tracks vital signs including temperature, heart rate, and central venous pressure.
@@ -49,7 +49,4 @@ This project is a synthetic health monitoring system developed as part of a cour
 - **Monitoring**: Controls the monitoring logic and data flow between components.
 - **DataStorage**: Manages storage and retrieval of patient data.
 - **Statistics**: Performs calculations on health data to derive meaningful insights.
-
-## Acknowledgments
-- Developed under the guidance of Dmitry Sergeyevich Smirnov and Petr Vladimirovich Bochkarev, as part of the curriculum at MEPhI.
 
