@@ -20,12 +20,7 @@ This project is a synthetic health monitoring system. The system tracks key heal
 3. **Open Patient**: Displays a list of existing patients for selection and review.
 4. **Monitoring Window**: Shows the last 10 measurements of temperature, heart rate, and venous pressure for the selected patient. Includes "Start Monitoring" and "Stop Monitoring" buttons.
 5. **Data Generation**: Health data is generated at regular intervals when monitoring is active, with values stored and analyzed in real-time.
-
-## Methodology
-- **ER Diagram**: Defines the relationships between entities in the system.
-- **Use-Case Diagram**: Illustrates key user interactions, including creating and opening patients, starting and stopping monitoring, and responding to critical health alerts.
-- **Class Diagram**: Outlines the structure and associations between classes, including `HealthIndicator`, `Patient`, `MonitoringView`, `DataGenerator`, and `PatientObserver`.
-
+   
 ## Technology Stack
 - **Java**: Core programming language used for backend logic and GUI implementation.
 - **Swing**: For creating the graphical user interface components.
